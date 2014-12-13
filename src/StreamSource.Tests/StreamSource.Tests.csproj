@@ -43,10 +43,12 @@
   <ItemGroup>
     <Compile Include="Framework\EqualityAssertion.cs" />
     <Compile Include="Framework\EqualityAssertionOptions.cs" />
+    <Compile Include="MetadatumTests.cs" />
     <Compile Include="Naming\StreamNameComponentTests.cs" />
     <Compile Include="Naming\StreamNameParseTests.cs" />
     <Compile Include="Naming\StreamNameTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StreamChangeTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -57,7 +59,9 @@
       <Name>StreamSource</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Serialization\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
