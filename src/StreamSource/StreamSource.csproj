@@ -37,10 +37,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Serialization\IMessageDeserializer.cs" />
+    <Compile Include="Serialization\IMessageSerializer.cs" />
+    <Compile Include="Storage\IStreamStoreRecordWriter.cs" />
+    <Compile Include="IStreamStoreWriterSelector.cs" />
+    <Compile Include="Metadatum.cs" />
+    <Compile Include="Serialization\IMetadataDeserializer.cs" />
+    <Compile Include="Serialization\IMetadataSerializer.cs" />
+    <Compile Include="Serialization\MessageRecord.cs" />
+    <Compile Include="StreamChange.cs" />
+    <Compile Include="StreamChangeset.cs" />
+    <Compile Include="Storage\StreamRecord.cs" />
     <Compile Include="Naming\StreamName.cs" />
     <Compile Include="Naming\StreamNameComponent.cs" />
     <Compile Include="Naming\StreamNameFormat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IStreamStoreWriter.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
