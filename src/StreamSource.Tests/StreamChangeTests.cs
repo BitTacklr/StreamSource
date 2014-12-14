@@ -10,29 +10,29 @@ namespace StreamSource
         [Test]
         public void MessageCanNotBeNull()
         {
-            Assert.Throws<ArgumentNullException>(() => 
-                new StreamChange(Guid.Empty, null, new Metadatum[0]));
+            Assert.Throws<ArgumentNullException>(() =>
+                StreamChangeBuilder.Default.WithMessage(null).Build());
         }
 
         [Test]
         public void MetadataCanNotBeNull()
         {
             Assert.Throws<ArgumentNullException>(() =>
-                new StreamChange(Guid.Empty, new object(), null));
+                StreamChangeBuilder.Default.WithMetadata(null).Build());
         }
 
         [Test]
         public void MetadataCanBeEmpty()
         {
             Assert.DoesNotThrow(() =>
-                new StreamChange(Guid.Empty, new object(), new Metadatum[0]));
+                StreamChangeBuilder.Default.WithMetadata(new Metadatum[0]));
         }
 
         [Test]
         public void MessageIdReturnsExpectedResult()
         {
             var messageId = Guid.NewGuid();
-            var sut = new StreamChange(messageId, new object(), new Metadatum[0]);
+            var sut = StreamChangeBuilder.Default.WithMessageId(messageId).Build();
             var result = sut.MessageId;
             Assert.That(result, Is.EqualTo(messageId));
         }
@@ -41,7 +41,7 @@ namespace StreamSource
         public void MessageReturnsExpectedResult()
         {
             var message = new object();
-            var sut = new StreamChange(Guid.Empty, message, new Metadatum[0]);
+            var sut = StreamChangeBuilder.Default.WithMessage(message).Build();
             var result = sut.Message;
             Assert.That(result, Is.EqualTo(message));
         }
@@ -55,7 +55,7 @@ namespace StreamSource
                 new Metadatum("name2", "value2"), 
                 new Metadatum("name1", "value2") 
             };
-            var sut = new StreamChange(Guid.Empty, new object(), metadata);
+            var sut = StreamChangeBuilder.Default.WithMetadata(metadata).Build();
             var result = sut.Metadata;
             Assert.That(result, Is.EquivalentTo(metadata));
         }
@@ -82,10 +82,51 @@ namespace StreamSource
             };
             new EqualityAssertion(new StreamChange(messageId1, message1, metadata1)).
                 VerifyEqual(new StreamChange(messageId1, message1, metadata1), new StreamChange(messageId1, message1, metadata1)).
+                VerifyNotEqual(new StreamChange(messageId1, message1, metadata1), new object()).
                 VerifyNotEqual(new StreamChange(messageId1, message1, metadata1), new StreamChange(messageId2, message1, metadata1)).
                 VerifyNotEqual(new StreamChange(messageId1, message1, metadata1), new StreamChange(messageId1, message2, metadata1)).
                 VerifyNotEqual(new StreamChange(messageId1, message1, metadata1), new StreamChange(messageId1, message1, metadata2)).
                 Assert();
+        }
+
+        class StreamChangeBuilder
+        {
+            public static readonly StreamChangeBuilder Default = new StreamChangeBuilder(
+                Guid.Empty, new object(), new Metadatum[0]);
+
+            private readonly Guid _messageId;
+            private readonly object _message;
+            private readonly Metadatum[] _metadata;
+
+            StreamChangeBuilder(Guid messageId, object message, Metadatum[] metadata)
+            {
+                _messageId = messageId;
+                _message = message;
+                _metadata = metadata;
+            }
+
+            public StreamChangeBuilder WithMessageId(Guid value)
+            {
+                return new StreamChangeBuilder(value, _message, _metadata);
+            }
+
+            public StreamChangeBuilder WithMessage(object value)
+            {
+                return new StreamChangeBuilder(_messageId, value, _metadata);
+            }
+
+            public StreamChangeBuilder WithMetadata(Metadatum[] value)
+            {
+                return new StreamChangeBuilder(_messageId, _message, value);
+            }
+
+            public StreamChange Build()
+            {
+                return new StreamChange(
+                    _messageId,
+                    _message,
+                    _metadata);
+            }
         }
     }
 }

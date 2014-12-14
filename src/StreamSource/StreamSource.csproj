@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="Serialization\IMessageDeserializer.cs" />
     <Compile Include="Serialization\IMessageSerializer.cs" />
+    <Compile Include="Storage\IStreamNameHashAlgorithm.cs" />
     <Compile Include="Storage\IStreamStoreRecordWriter.cs" />
     <Compile Include="IStreamStoreWriterSelector.cs" />
     <Compile Include="Metadatum.cs" />

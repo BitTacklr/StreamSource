@@ -64,10 +64,10 @@ namespace StreamSource.Framework
             if (right == null) throw new ArgumentNullException("right");
             var cases = new List<IEqualityTestCase>();
             if (_options.VerifyObjectEquals) cases.Add(new ObjectEqualsTestCase(left, right, false));
-            if (_options.VerifyTypeEquals) cases.Add(new TypeEqualsTestCase(left, right, false));
+            if (_options.VerifyTypeEquals && left.GetType() == right.GetType()) cases.Add(new TypeEqualsTestCase(left, right, false));
             if (_options.VerifyGetHashCode) cases.Add(new GetHashCodeTestCase(left, right, false));
-            if (_options.VerifyEqualsOperator) cases.Add(new EqualsOperatorTestCase(left, right, false));
-            if (_options.VerifyNotEqualsOperator) cases.Add(new NotEqualsOperatorTestCase(left, right, true));
+            if (_options.VerifyEqualsOperator && left.GetType() == right.GetType()) cases.Add(new EqualsOperatorTestCase(left, right, false));
+            if (_options.VerifyNotEqualsOperator && left.GetType() == right.GetType()) cases.Add(new NotEqualsOperatorTestCase(left, right, true));
             return new EqualityAssertion(_options, _cases.Concat(cases).ToArray());
         }
 
